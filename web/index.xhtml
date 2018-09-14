@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title><h:outputText value="#{msg.title}"/></title>
+        <link href="css/style.css" rel="stylesheet" type="text/css"/>
+        <script name="jquery/jquery.js" library="primefaces"></script>
+        
+    </h:head>
+    <h:body>
+        <h:form>
+            <h:commandButton  action="#{paymentBean.changeLanguage('')}"  value="English"  image="resource/eeuu.png"/>
+            <h:commandButton  action="#{paymentBean.changeLanguage('es')}"  value="Español"  image="resource/spain.png"/>
+            
+        </h:form>
+        <h:form prependId="false">
+            <h1>
+                <h:outputText value="#{msg['card_details']}"/>
+            </h1>
+            <h:panelGrid columns="3">
+                <p:outputLabel value="#{msg.id}" for="id"/>
+                <p:inputText id="id" label="#{msg.id}" value="#{paymentBean.id}" required="true">
+                    <f:attribute name="requiredMessage" value="#{msg.id_required}"/>
+                </p:inputText>
+                <p:message for="id" styleClass="errormsg"/>
+                           
+                           
+                 <p:outputLabel value="#{msg.amount}" for="amount"/>
+                <p:inputText id="amount" label="#{msg.amount}" value="#{paymentBean.amount}" required="true">
+                    <f:attribute name="requiredMessage" value="#{msg.amountvalid}"/>
+                    <f:convertNumber minFractionDigits="2" />
+                    <f:validateDoubleRange minimum="100" maximum="5000"/>
+                </p:inputText>
+                <p:message for="amount" styleClass="errormsg"/> 
+                
+                 <p:outputLabel value="#{msg.creditCard}" for="card"/>
+                <p:inputText id="card" label="#{msg.creditCard}" value="#{paymentBean.card}" required="true">
+                    <f:attribute name="requiredMessage" value="#{msg.card_required}"/>
+                    <f:validateLength minimum="16"/>
+                </p:inputText>
+                 <p:message for="card" styleClass="errormsg"/>
+                 
+                 
+                 <p:outputLabel value="#{msg.expiry_date}" for="date"/>
+                 <p:calendar id="date" label="#{msg.expiry_date}" navigator="true" readonlyInput="true" showOn="button"
+                             value="#{paymentBean.date}" pattern="MM/yyyy" required="true">
+                 </p:calendar>
+                <p:message for="date" styleClass="errormsg"/>
+                
+                <p:outputLabel value="#{msg.cvv_no}" for="cvv"/>
+                <p:inputText id="cvv" label="#{msg.cvv_no}" value="#{paymentBean.cvvNo}" required="true">
+                    <f:attribute name="requiredMessage" value="#{msg.cvv_no_required}"/>
+                    <f:validateLength minimum="3" />
+                </p:inputText>
+                <p:message for="cvv" styleClass="errormsg"/>
+                
+                <p:outputLabel value="Contraseña" for="txtContrasenia"/>
+                <p:password id="txtContrasenia" label="Constraseña" size="50"
+                            value="#{paymentBean.contrasenia}" required="true"
+                            match="pwd2">
+                    <f:attribute name="requiredMessage" value="#{msg.ppw}"/>
+                    <f:validateLength minimum="6" />
+                </p:password>
+                
+                <p:message for="txtContrasenia" styleClass="errormsg"/>
+                
+                
+                <p:outputLabel value="Repita la contraseña" for="pwd2"/>
+                <p:password id="pwd2" label="repita la constraseña" size="50"
+                            value="#{paymentBean.txtContraseniaRepita}" required="true">
+                    <f:attribute name="requiredMessage" value="#{msg.pwd2}"/>
+                    <f:validateLength minimum="6"/>
+                </p:password>
+                <p:message for="pwd2" styleClass="errormsg"/>
+                
+                
+            </h:panelGrid>
+            <br/>
+            
+            <h2>CAPTCHA</h2>
+            <p:messages id="msg"/>
+            <p:captcha id="captcha"></p:captcha>
+            <br/>
+            
+            <p:commandButton value="Check" actionListener="#{captcha.check}" ajax="false"></p:commandButton>
+            <p:commandButton id="x" value="Submit" actionListener="#{paymentBean.guardar()}"
+                             disabled="#{paymentBean.disable}" action="submit" update="@form:x"/>
+            
+            <h:commandButton id="mybutton" binding="#{paymentBean.mybutton}"
+                             value="validar" actionListener="#{paymentBean.validar()}"/>
+            <h:message for="mybutton"/>
+            
+        </h:form>
+        
+        
+        
+    </h:body>
+</html>
+
